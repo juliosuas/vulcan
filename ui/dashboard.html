@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vulcan — Dashboard</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-dim: #8b949e;
+    --accent: #f85149;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --blue: #58a6ff;
+    --orange: #d18616;
+    --critical: #f85149;
+    --high: #d18616;
+    --medium: #d29922;
+    --low: #58a6ff;
+    --info: #8b949e;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; }
+  .container { max-width: 1400px; margin: 0 auto; padding: 24px; }
+  header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+  header h1 { color: var(--accent); font-size: 28px; letter-spacing: 4px; }
+  header .status { display: flex; align-items: center; gap: 8px; }
+  header .status .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--green); animation: pulse 2s infinite; }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .stat-card .label { color: var(--text-dim); font-size: 13px; text-transform: uppercase; letter-spacing: 1px; }
+  .stat-card .value { font-size: 36px; font-weight: 700; margin-top: 8px; }
+  .stat-card.critical .value { color: var(--critical); }
+  .stat-card.high .value { color: var(--high); }
+  .stat-card.medium .value { color: var(--medium); }
+  .stat-card.low .value { color: var(--low); }
+  .stat-card.total .value { color: var(--text); }
+  .panels { display: grid; grid-template-columns: 2fr 1fr; gap: 24px; }
+  .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+  .panel h2 { font-size: 16px; color: var(--text-dim); margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px; }
+  .findings-list { list-style: none; }
+  .findings-list li { padding: 12px 0; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .findings-list li:last-child { border-bottom: none; }
+  .severity-badge { padding: 2px 10px; border-radius: 12px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+  .severity-badge.critical { background: rgba(248,81,73,0.15); color: var(--critical); }
+  .severity-badge.high { background: rgba(209,134,22,0.15); color: var(--high); }
+  .severity-badge.medium { background: rgba(210,153,34,0.15); color: var(--medium); }
+  .severity-badge.low { background: rgba(88,166,255,0.15); color: var(--low); }
+  .severity-badge.info { background: rgba(139,148,158,0.15); color: var(--info); }
+  .timeline { list-style: none; position: relative; }
+  .timeline::before { content: ''; position: absolute; left: 8px; top: 0; bottom: 0; width: 2px; background: var(--border); }
+  .timeline li { padding: 8px 0 8px 28px; position: relative; font-size: 13px; }
+  .timeline li::before { content: ''; position: absolute; left: 4px; top: 14px; width: 10px; height: 10px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); }
+  .timeline li .time { color: var(--text-dim); margin-right: 8px; }
+  #progress-bar { width: 100%; height: 6px; background: var(--border); border-radius: 3px; margin-bottom: 24px; overflow: hidden; }
+  #progress-bar .fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--orange)); transition: width 0.5s ease; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>VULCAN</h1>
+    <div class="status">
+      <div class="dot" id="status-dot"></div>
+      <span id="status-text">Scanning...</span>
+    </div>
+  </header>
+
+  <div id="progress-bar"><div class="fill" id="progress-fill" style="width: 0%"></div></div>
+
+  <div class="stats">
+    <div class="stat-card total"><div class="label">Total Findings</div><div class="value" id="total">0</div></div>
+    <div class="stat-card critical"><div class="label">Critical</div><div class="value" id="critical">0</div></div>
+    <div class="stat-card high"><div class="label">High</div><div class="value" id="high">0</div></div>
+    <div class="stat-card medium"><div class="label">Medium</div><div class="value" id="medium">0</div></div>
+    <div class="stat-card low"><div class="label">Low</div><div class="value" id="low">0</div></div>
+  </div>
+
+  <div class="panels">
+    <div class="panel">
+      <h2>Findings</h2>
+      <ul class="findings-list" id="findings-list">
+        <li><span class="severity-badge info">waiting</span> Scan in progress...</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <h2>Timeline</h2>
+      <ul class="timeline" id="timeline">
+        <li><span class="time">--:--</span> Initializing scan...</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<script>
+// Dashboard state — updated by Vulcan agent via file writes or WebSocket
+const state = {
+  progress: 0,
+  status: 'scanning',
+  findings: [],
+  timeline: [],
+};
+
+function updateDashboard(data) {
+  if (data.progress !== undefined) {
+    state.progress = data.progress;
+    document.getElementById('progress-fill').style.width = data.progress + '%';
+  }
+  if (data.status) {
+    state.status = data.status;
+    document.getElementById('status-text').textContent = data.status;
+    const dot = document.getElementById('status-dot');
+    dot.style.background = data.status === 'complete' ? 'var(--green)' : 'var(--accent)';
+    dot.style.animation = data.status === 'complete' ? 'none' : 'pulse 2s infinite';
+  }
+  if (data.findings) {
+    state.findings = data.findings;
+    renderFindings();
+  }
+  if (data.timeline_entry) {
+    state.timeline.push(data.timeline_entry);
+    renderTimeline();
+  }
+}
+
+function renderFindings() {
+  const list = document.getElementById('findings-list');
+  const counts = { critical: 0, high: 0, medium: 0, low: 0, info: 0 };
+
+  list.innerHTML = state.findings.map(f => {
+    counts[f.severity] = (counts[f.severity] || 0) + 1;
+    return `<li><span class="severity-badge ${f.severity}">${f.severity}</span>${f.title}</li>`;
+  }).join('') || '<li><span class="severity-badge info">clear</span> No findings yet</li>';
+
+  document.getElementById('total').textContent = state.findings.length;
+  document.getElementById('critical').textContent = counts.critical;
+  document.getElementById('high').textContent = counts.high;
+  document.getElementById('medium').textContent = counts.medium;
+  document.getElementById('low').textContent = counts.low;
+}
+
+function renderTimeline() {
+  const list = document.getElementById('timeline');
+  list.innerHTML = state.timeline.map(e =>
+    `<li><span class="time">${e.time}</span>${e.message}</li>`
+  ).join('');
+}
+
+// Poll for updates from a local JSON file (written by Vulcan agent)
+async function pollUpdates() {
+  try {
+    const resp = await fetch('vulcan_status.json?t=' + Date.now());
+    if (resp.ok) {
+      const data = await resp.json();
+      updateDashboard(data);
+    }
+  } catch(e) { /* ignore fetch errors */ }
+  setTimeout(pollUpdates, 2000);
+}
+
+pollUpdates();
+</script>
+</body>
+</html>

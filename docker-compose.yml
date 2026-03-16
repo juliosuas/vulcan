@@ -1,0 +1,13 @@
+version: "3.8"
+
+services:
+  vulcan:
+    build: .
+    container_name: vulcan-agent
+    env_file:
+      - .env
+    volumes:
+      - ./vulcan_output:/app/vulcan_output
+    network_mode: host
+    stdin_open: true
+    tty: true

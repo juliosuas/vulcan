@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vulcan Penetration Test Report</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface2: #1c2128;
+    --border: #30363d;
+    --text: #c9d1d9;
+    --text-dim: #8b949e;
+    --accent: #f85149;
+    --green: #3fb950;
+    --yellow: #d29922;
+    --blue: #58a6ff;
+    --orange: #d18616;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif; line-height: 1.6; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 40px 24px; }
+
+  /* Header */
+  .report-header { text-align: center; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 2px solid var(--accent); }
+  .report-header h1 { font-size: 42px; color: var(--accent); letter-spacing: 8px; margin-bottom: 8px; }
+  .report-header .subtitle { color: var(--text-dim); font-size: 18px; }
+  .report-header .meta { margin-top: 24px; display: flex; justify-content: center; gap: 32px; color: var(--text-dim); font-size: 14px; }
+  .report-header .meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* Executive Summary */
+  .exec-summary { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 32px; margin-bottom: 32px; }
+  .exec-summary h2 { color: var(--accent); margin-bottom: 16px; font-size: 20px; }
+
+  /* Severity Stats */
+  .severity-stats { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 40px; }
+  .sev-card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; text-align: center; }
+  .sev-card .count { font-size: 48px; font-weight: 700; }
+  .sev-card .label { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--text-dim); margin-top: 4px; }
+  .sev-card.critical .count { color: #f85149; }
+  .sev-card.high .count { color: #d18616; }
+  .sev-card.medium .count { color: #d29922; }
+  .sev-card.low .count { color: #58a6ff; }
+  .sev-card.info .count { color: #8b949e; }
+
+  /* Findings */
+  .findings-section { margin-bottom: 40px; }
+  .findings-section h2 { font-size: 20px; color: var(--text); margin-bottom: 24px; padding-bottom: 8px; border-bottom: 1px solid var(--border); }
+  .finding { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+  .finding-header { padding: 16px 20px; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid var(--border); }
+  .finding-header .sev { padding: 3px 12px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+  .finding-header .sev.critical { background: rgba(248,81,73,0.15); color: #f85149; }
+  .finding-header .sev.high { background: rgba(209,134,22,0.15); color: #d18616; }
+  .finding-header .sev.medium { background: rgba(210,153,34,0.15); color: #d29922; }
+  .finding-header .sev.low { background: rgba(88,166,255,0.15); color: #58a6ff; }
+  .finding-header .sev.info { background: rgba(139,148,158,0.15); color: #8b949e; }
+  .finding-header .title { font-size: 16px; font-weight: 600; }
+  .finding-body { padding: 20px; }
+  .finding-body .section { margin-bottom: 16px; }
+  .finding-body .section:last-child { margin-bottom: 0; }
+  .finding-body .section-label { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 4px; }
+  .finding-body pre { background: var(--surface2); padding: 12px; border-radius: 6px; overflow-x: auto; font-size: 13px; border: 1px solid var(--border); white-space: pre-wrap; word-wrap: break-word; }
+  .finding-body .remediation { background: rgba(63,185,80,0.08); border: 1px solid rgba(63,185,80,0.2); padding: 12px; border-radius: 6px; color: var(--green); }
+
+  /* Footer */
+  .report-footer { text-align: center; padding: 32px 0; border-top: 1px solid var(--border); margin-top: 40px; color: var(--text-dim); font-size: 13px; }
+
+  /* Raw Output */
+  .raw-section { margin-bottom: 24px; }
+  .raw-section summary { cursor: pointer; color: var(--blue); font-size: 14px; padding: 8px 0; }
+  .raw-section pre { max-height: 400px; overflow-y: auto; }
+
+  @media print {
+    body { background: #fff; color: #222; }
+    .container { max-width: 100%; }
+    .finding, .exec-summary, .sev-card { border-color: #ddd; background: #f9f9f9; }
+    .finding-body pre { background: #f0f0f0; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="report-header">
+    <h1>VULCAN</h1>
+    <div class="subtitle">Penetration Test Report</div>
+    <div class="meta">
+      {% if summary %}
+      <span>Target: <strong>{{ summary.target }}</strong></span>
+      <span>Mode: <strong>{{ summary.scan_mode }}</strong></span>
+      <span>Duration: <strong>{{ summary.start_time.strftime('%H:%M') if summary.start_time else 'N/A' }} — {{ summary.end_time.strftime('%H:%M') if summary.end_time else 'N/A' }}</strong></span>
+      {% endif %}
+      <span>Generated: <strong>{{ generated_at }}</strong></span>
+    </div>
+  </div>
+
+  <div class="exec-summary">
+    <h2>Executive Summary</h2>
+    <p>
+      This report presents the findings of an automated penetration test conducted by Vulcan against
+      <strong>{{ summary.target if summary else 'the target' }}</strong>.
+      A total of <strong>{{ findings|length }}</strong> finding(s) were identified across
+      <strong>{{ summary.modules_run|length if summary else 0 }}</strong> testing module(s),
+      with <strong>{{ summary.commands_executed if summary else 0 }}</strong> commands executed during the assessment.
+    </p>
+  </div>
+
+  <div class="severity-stats">
+    <div class="sev-card critical">
+      <div class="count">{{ severity_counts.critical }}</div>
+      <div class="label">Critical</div>
+    </div>
+    <div class="sev-card high">
+      <div class="count">{{ severity_counts.high }}</div>
+      <div class="label">High</div>
+    </div>
+    <div class="sev-card medium">
+      <div class="count">{{ severity_counts.medium }}</div>
+      <div class="label">Medium</div>
+    </div>
+    <div class="sev-card low">
+      <div class="count">{{ severity_counts.low }}</div>
+      <div class="label">Low</div>
+    </div>
+    <div class="sev-card info">
+      <div class="count">{{ severity_counts.info }}</div>
+      <div class="label">Info</div>
+    </div>
+  </div>
+
+  <div class="findings-section">
+    <h2>Detailed Findings</h2>
+    {% for finding in findings %}
+    <div class="finding">
+      <div class="finding-header">
+        <span class="sev {{ finding.severity }}">{{ finding.severity }}</span>
+        <span class="title">{{ finding.title }}</span>
+      </div>
+      <div class="finding-body">
+        <div class="section">
+          <div class="section-label">Description</div>
+          <p>{{ finding.description }}</p>
+        </div>
+        {% if finding.evidence %}
+        <div class="section">
+          <div class="section-label">Evidence</div>
+          <pre>{{ finding.evidence }}</pre>
+        </div>
+        {% endif %}
+        {% if finding.remediation %}
+        <div class="section">
+          <div class="section-label">Remediation</div>
+          <div class="remediation">{{ finding.remediation }}</div>
+        </div>
+        {% endif %}
+        {% if finding.cvss %}
+        <div class="section">
+          <div class="section-label">CVSS Score</div>
+          <p>{{ finding.cvss }}</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+
+    {% if not findings %}
+    <div class="finding">
+      <div class="finding-header">
+        <span class="sev info">info</span>
+        <span class="title">No vulnerabilities found</span>
+      </div>
+      <div class="finding-body">
+        <p>The automated assessment did not identify any vulnerabilities. Manual testing is recommended.</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+
+  {% if raw_outputs %}
+  <div class="findings-section">
+    <h2>Raw Tool Output</h2>
+    {% for module, output in raw_outputs.items() %}
+    <div class="raw-section">
+      <details>
+        <summary>{{ module }}</summary>
+        <pre>{{ output }}</pre>
+      </details>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <div class="report-footer">
+    <p>Generated by <strong>VULCAN</strong> — AI-Powered Autonomous Penetration Testing Agent</p>
+    <p>This report is confidential and intended for authorized recipients only.</p>
+  </div>
+</div>
+</body>
+</html>
