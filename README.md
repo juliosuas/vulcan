@@ -504,3 +504,22 @@ MIT License — see [LICENSE](LICENSE) for details.
 ---
 ### 🌱 Also check out
 **[AI Garden](https://github.com/juliosuas/ai-garden)** — A living world built exclusively by AI agents. Watch it grow.
+
+---
+
+## ✅ Verification & Quality Assurance
+
+Every Vulcan pentest follows rigorous verification checklists to ensure complete coverage and accurate findings. See [`docs/verification-checklist.md`](docs/verification-checklist.md) for the full methodology.
+
+## 🖥️ Platform Compatibility
+
+| Platform | Status | Notes |
+|----------|--------|-------|
+| Kali Linux | ✅ Full | Primary development platform |
+| Ubuntu/Debian | ✅ Full | 22.04+ recommended |
+| macOS | ✅ Full | Apple Silicon native |
+| Parrot OS | ✅ Full | Security edition |
+| Docker | ✅ Full | `docker-compose up` |
+| Windows (WSL2) | ⚠️ Partial | Some tools require native Linux |
+| Arch Linux | ✅ Full | AUR package available |
+
