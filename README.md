@@ -1,92 +1,197 @@
+```
+ ██╗   ██╗██╗   ██╗██╗      ██████╗ █████╗ ███╗   ██╗
+ ██║   ██║██║   ██║██║     ██╔════╝██╔══██╗████╗  ██║
+ ██║   ██║██║   ██║██║     ██║     ███████║██╔██╗ ██║
+ ╚██╗ ██╔╝██║   ██║██║     ██║     ██╔══██║██║╚██╗██║
+  ╚████╔╝ ╚██████╔╝███████╗╚██████╗██║  ██║██║ ╚████║
+   ╚═══╝   ╚═════╝ ╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═══╝
+```
+
+<h1 align="center">🌋 VULCAN</h1>
+<p align="center"><b>AI-Powered Autonomous Penetration Testing Agent</b></p>
+<p align="center"><i>Let the AI think. Let the tools execute. Get the report.</i></p>
+
 <p align="center">
-  <img src="docs/logo.png" alt="Vulcan Logo" width="400"/>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python 3.10+"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License: MIT"></a>
+  <a href="https://github.com/juliosuas/vulcan/actions"><img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build"></a>
+  <a href="https://github.com/juliosuas/vulcan/issues"><img src="https://img.shields.io/github/issues/juliosuas/vulcan?style=flat-square" alt="Issues"></a>
+  <a href="https://github.com/juliosuas/vulcan/stargazers"><img src="https://img.shields.io/github/stars/juliosuas/vulcan?style=flat-square" alt="Stars"></a>
+  <img src="https://img.shields.io/badge/security-pentest-critical?style=flat-square&logo=hackthebox&logoColor=white" alt="Security">
+  <img src="https://img.shields.io/badge/AI-Claude%20%7C%20GPT--4-purple?style=flat-square&logo=openai&logoColor=white" alt="AI Powered">
 </p>
 
-<h1 align="center">VULCAN</h1>
-<p align="center"><b>AI-Powered Autonomous Penetration Testing Agent</b></p>
-
 <p align="center">
-  <a href="#features">Features</a> •
-  <a href="#installation">Installation</a> •
-  <a href="#usage">Usage</a> •
-  <a href="#architecture">Architecture</a> •
-  <a href="#screenshots">Screenshots</a> •
-  <a href="#disclaimer">Disclaimer</a>
+  <a href="#-how-it-works">How it Works</a> •
+  <a href="#-features">Features</a> •
+  <a href="#-installation">Installation</a> •
+  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-architecture">Architecture</a> •
+  <a href="#-comparison">Comparison</a> •
+  <a href="#-screenshots">Screenshots</a> •
+  <a href="#-roadmap">Roadmap</a> •
+  <a href="#-contributing">Contributing</a> •
+  <a href="#%EF%B8%8F-disclaimer">Disclaimer</a>
 </p>
 
 ---
 
-Vulcan is an autonomous penetration testing framework that leverages Large Language Models (Claude, GPT-4) to plan, execute, and report on security assessments. It uses a ReAct (Reason → Act → Observe) loop to intelligently drive the pentest pipeline — from reconnaissance through exploitation to professional report generation.
+## What is Vulcan?
 
-## Features
+**Vulcan** is an autonomous penetration testing framework that leverages Large Language Models (Claude, GPT-4) to **plan, execute, and report** on security assessments — without constant human intervention.
 
-- **AI-Driven Planning** — LLM-powered attack planning that adapts based on discovered information
-- **Full Pentest Pipeline** — Reconnaissance, scanning, exploitation, and reporting in one tool
-- **Multi-LLM Support** — Works with Anthropic Claude and OpenAI GPT-4
-- **Professional Reports** — Generates HTML/PDF pentest reports with findings, severity ratings, and remediation guidance
-- **Tool Integration** — Wraps industry-standard tools (Nmap, Nuclei, SQLMap, Gobuster, and more)
-- **Rich CLI** — Beautiful terminal interface with progress bars, tables, and live scan updates
-- **Web Dashboard** — Single-file HTML dashboard for monitoring scan progress and findings
-- **Safe Execution** — Subprocess isolation with timeouts and output capture
-- **Modular Architecture** — Easy to extend with new modules and tool wrappers
-- **Docker Support** — Run in an isolated container environment
+It uses a **ReAct (Reason → Act → Observe)** loop to intelligently drive the entire pentest pipeline: from reconnaissance through exploitation to professional report generation. Think of it as an AI pentester that wraps industry-standard tools and makes intelligent decisions about what to run next.
 
-## Installation
+> **One command. Full assessment. Professional report.**
 
-### Prerequisites
+---
 
-- Python 3.10+
-- External tools (optional, gracefully handled if missing):
-  - [Nmap](https://nmap.org/)
-  - [Nuclei](https://github.com/projectdiscovery/nuclei)
-  - [SQLMap](https://sqlmap.org/)
-  - [Gobuster](https://github.com/OJ/gobuster)
-  - [Subfinder](https://github.com/projectdiscovery/subfinder)
+## 🔄 How it Works
 
-### From Source
+Vulcan operates on a **ReAct loop** — the same reasoning pattern used by autonomous AI agents:
+
+```
+                    ┌─────────────────────┐
+                    │     🎯 TARGET       │
+                    │   example.com       │
+                    └─────────┬───────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │         🧠 REASON            │
+               │   LLM analyzes current state  │
+               │   Plans next action            │
+               │   Prioritizes attack surface   │
+               └──────────────┬───────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │          ⚡ ACT              │
+               │   Execute selected tool       │
+               │   (Nmap, Nuclei, SQLMap...)   │
+               │   Subprocess isolation        │
+               └──────────────┬───────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │        👁️ OBSERVE            │
+               │   Parse tool output           │
+               │   Update knowledge base       │
+               │   Identify new vectors        │
+               └──────────────┬───────────────┘
+                              │
+                     ┌────────┴────────┐
+                     │  More to test?  │
+                     └────────┬────────┘
+                        Yes ↙     ↘ No
+                  (loop back       ▼
+                   to REASON)  ┌────────┐
+                               │ REPORT │
+                               │ 📋     │
+                               └────────┘
+```
+
+Each iteration refines the attack plan based on discovered information. The LLM decides when to pivot, what to investigate deeper, and when the assessment is complete.
+
+---
+
+## ✨ Features
+
+| Feature | Description | Status |
+|---------|-------------|--------|
+| 🧠 AI-Driven Planning | LLM-powered attack planning that adapts in real-time | ✅ |
+| 🔄 ReAct Loop | Autonomous Reason → Act → Observe cycle | ✅ |
+| 📡 Full Recon Pipeline | Subdomains, ports, tech stack, directories | ✅ |
+| 🔍 Vulnerability Scanning | Automated vuln discovery with Nuclei + custom checks | ✅ |
+| 💉 Exploitation | SQLi, XSS, command injection via integrated tools | ✅ |
+| 📊 Professional Reports | HTML/PDF reports with severity ratings & remediation | ✅ |
+| 🤖 Multi-LLM Support | Anthropic Claude & OpenAI GPT-4 | ✅ |
+| 🖥️ Rich CLI | Beautiful terminal UI with progress bars & tables | ✅ |
+| 🌐 Web Dashboard | Single-file HTML dashboard for monitoring | ✅ |
+| 🐳 Docker Support | Isolated container environment | ✅ |
+| 🔒 Safe Execution | Subprocess isolation with timeouts | ✅ |
+| 🧩 Modular Architecture | Easy to extend with new modules | ✅ |
+
+---
+
+## 📦 Installation
+
+### Option 1: pip (Recommended)
 
 ```bash
-git clone https://github.com/yourorg/vulcan.git
+pip install vulcan-pentest
+```
+
+### Option 2: From Source
+
+```bash
+git clone https://github.com/juliosuas/vulcan.git
 cd vulcan
 pip install -e .
 ```
 
-### Docker
+### Option 3: Docker
 
 ```bash
+git clone https://github.com/juliosuas/vulcan.git
+cd vulcan
 docker-compose up --build
 ```
 
 ### Configuration
 
-Copy the example environment file and add your API keys:
-
 ```bash
 cp .env.example .env
-# Edit .env with your ANTHROPIC_API_KEY and/or OPENAI_API_KEY
 ```
 
-## Usage
+Add your API keys to `.env`:
 
-### Quick Scan
+```env
+ANTHROPIC_API_KEY=sk-ant-...
+OPENAI_API_KEY=sk-...
+```
+
+### External Tools (Optional)
+
+Vulcan gracefully degrades if tools are missing, but for full coverage install:
+
+| Tool | Purpose | Install |
+|------|---------|---------|
+| [Nmap](https://nmap.org/) | Port scanning & service detection | `apt install nmap` |
+| [Nuclei](https://github.com/projectdiscovery/nuclei) | Vulnerability scanning | `go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest` |
+| [SQLMap](https://sqlmap.org/) | SQL injection testing | `pip install sqlmap` |
+| [Gobuster](https://github.com/OJ/gobuster) | Directory & DNS brute-forcing | `go install github.com/OJ/gobuster/v3@latest` |
+| [Subfinder](https://github.com/projectdiscovery/subfinder) | Subdomain enumeration | `go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest` |
+
+---
+
+## 🚀 Quick Start
+
+### 1. Quick Scan (fastest)
 
 ```bash
 vulcan scan --target example.com
 ```
 
-### Full Assessment
+### 2. Full Assessment with Claude
 
 ```bash
 vulcan scan --target example.com --mode full --llm claude --report html
 ```
 
-### Recon Only
+### 3. Recon Only
 
 ```bash
 vulcan recon --target example.com --modules subdomains,ports,tech
 ```
 
-### CLI Options
+### 4. Generate Report from Existing Data
+
+```bash
+vulcan report --input ./vulcan_output/example.com --format pdf
+```
+
+### CLI Reference
 
 ```
 Usage: vulcan [OPTIONS] COMMAND [ARGS]
@@ -98,47 +203,166 @@ Commands:
 
 Options:
   --target, -t    Target domain or IP
-  --mode, -m      Scan mode: quick, standard, full (default: standard)
-  --llm           LLM provider: claude, openai (default: claude)
-  --report        Report format: html, pdf, json (default: html)
+  --mode, -m      Scan mode: quick | standard | full (default: standard)
+  --llm           LLM provider: claude | openai (default: claude)
+  --report        Report format: html | pdf | json (default: html)
   --output, -o    Output directory (default: ./vulcan_output)
   --config, -c    Path to config file
   --verbose, -v   Verbose output
   --help          Show this help message
 ```
 
-## Architecture
+---
+
+## 🏗️ Architecture
 
 ```
-┌─────────────────────────────────────────────┐
-│                 VulcanAgent                 │
-│            (ReAct Orchestrator)             │
-├─────────────┬───────────────┬───────────────┤
-│   Planner   │   Executor    │   Reporter    │
-│  (LLM-based │  (Subprocess  │  (HTML/PDF    │
-│   planning) │   isolation)  │   reports)    │
-├─────────────┴───────────────┴───────────────┤
-│                  Modules                     │
-│  ┌───────┐ ┌─────────┐ ┌─────────┐         │
-│  │ Recon │ │ Scanner │ │ Exploit │         │
-│  └───────┘ └─────────┘ └─────────┘         │
-│  ┌───────┐ ┌─────────┐                     │
-│  │  Web  │ │ Network │                     │
-│  └───────┘ └─────────┘                     │
-├──────────────────────────────────────────────┤
-│              Tool Wrappers                   │
-│  Nmap · Nuclei · SQLMap · Gobuster · ...    │
-└──────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────┐
+│                  VulcanAgent                      │
+│             (ReAct Orchestrator)                  │
+├────────────────┬──────────────┬──────────────────┤
+│    Planner     │   Executor   │    Reporter      │
+│  (LLM-based   │ (Subprocess  │  (HTML/PDF       │
+│   reasoning)   │  isolation)  │   generation)    │
+├────────────────┴──────────────┴──────────────────┤
+│                   Modules                         │
+│  ┌─────────┐ ┌──────────┐ ┌──────────┐          │
+│  │  Recon  │ │ Scanner  │ │ Exploit  │          │
+│  └─────────┘ └──────────┘ └──────────┘          │
+│  ┌─────────┐ ┌──────────┐                        │
+│  │   Web   │ │ Network  │                        │
+│  └─────────┘ └──────────┘                        │
+├──────────────────────────────────────────────────┤
+│               Tool Wrappers                       │
+│  Nmap · Nuclei · SQLMap · Gobuster · Subfinder   │
+└──────────────────────────────────────────────────┘
 ```
 
-## Screenshots
+---
 
-> *Screenshots coming soon — run `vulcan scan --target` to see the Rich CLI in action.*
+## 📊 Comparison
 
-## Disclaimer
+How does Vulcan compare to existing tools?
 
-**Vulcan is intended for authorized security testing only.** Always obtain explicit written permission before testing any systems you do not own. Unauthorized access to computer systems is illegal. The authors assume no liability for misuse of this tool.
+| Capability | Vulcan | Metasploit | Burp Suite | Nuclei |
+|-----------|--------|------------|------------|--------|
+| AI-driven planning | ✅ | ❌ | ❌ | ❌ |
+| Autonomous execution | ✅ | ❌ | ❌ | ⚠️ Partial |
+| ReAct reasoning loop | ✅ | ❌ | ❌ | ❌ |
+| Recon → Exploit → Report | ✅ Full pipeline | ⚠️ Manual | ⚠️ Manual | ❌ Scan only |
+| Auto-generated reports | ✅ HTML/PDF | ⚠️ Basic | ✅ | ⚠️ JSON |
+| Multi-tool orchestration | ✅ | ❌ Single | ❌ Single | ❌ Single |
+| Natural language control | ✅ | ❌ | ❌ | ❌ |
+| Open source | ✅ MIT | ✅ | ❌ Commercial | ✅ MIT |
+| Docker ready | ✅ | ✅ | ❌ | ✅ |
 
-## License
+> **Vulcan doesn't replace these tools — it orchestrates them.** It uses Nmap, Nuclei, SQLMap, and others under the hood, guided by AI decision-making.
+
+---
+
+## 📸 Screenshots
+
+<details>
+<summary><b>🖥️ Rich CLI Interface</b></summary>
+<br>
+<p align="center">
+  <i>Screenshot: Terminal output showing scan progress with Rich tables and progress bars</i>
+</p>
+
+> Run `vulcan scan --target example.com --verbose` to see it in action.
+</details>
+
+<details>
+<summary><b>📊 HTML Report</b></summary>
+<br>
+<p align="center">
+  <i>Screenshot: Professional HTML report with findings, severity ratings, and remediation guidance</i>
+</p>
+</details>
+
+<details>
+<summary><b>🌐 Web Dashboard</b></summary>
+<br>
+<p align="center">
+  <i>Screenshot: Real-time web dashboard showing scan progress and discovered findings</i>
+</p>
+</details>
+
+---
+
+## 🗺️ Roadmap
+
+- [x] Core ReAct loop with Claude/GPT-4
+- [x] Nmap, Nuclei, SQLMap, Gobuster integration
+- [x] HTML/PDF report generation
+- [x] Rich CLI interface
+- [x] Docker support
+- [x] Web dashboard
+- [ ] 🔜 Plugin system for custom tool integration
+- [ ] 🔜 Multi-target campaign mode
+- [ ] 🔜 API server mode (REST + WebSocket)
+- [ ] 🔜 Collaborative mode (multiple agents)
+- [ ] OWASP ZAP integration
+- [ ] Custom wordlist management
+- [ ] Scan scheduling & cron support
+- [ ] Slack/Discord notifications
+- [ ] Cloud deployment templates (AWS/GCP)
+- [ ] CVSS scoring integration
+- [ ] Evidence chain & attack path visualization
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how to get started:
+
+1. **Fork** the repository
+2. **Create** a feature branch: `git checkout -b feat/awesome-feature`
+3. **Commit** your changes: `git commit -m 'Add awesome feature'`
+4. **Push** to the branch: `git push origin feat/awesome-feature`
+5. **Open** a Pull Request
+
+### Development Setup
+
+```bash
+git clone https://github.com/juliosuas/vulcan.git
+cd vulcan
+pip install -e ".[dev]"
+python -m pytest tests/
+```
+
+### Guidelines
+
+- Follow existing code style and patterns
+- Add tests for new features
+- Update documentation as needed
+- Keep PRs focused and atomic
+
+---
+
+## ⚠️ Disclaimer
+
+> **⚠️ IMPORTANT: AUTHORIZED USE ONLY**
+>
+> Vulcan is designed and intended **exclusively for authorized security testing and educational purposes**.
+>
+> - **Always** obtain **explicit written permission** before testing any system
+> - **Never** use this tool against systems you do not own or have authorization to test
+> - Unauthorized access to computer systems is **illegal** in most jurisdictions
+> - Users are **solely responsible** for ensuring compliance with all applicable laws
+> - The authors and contributors assume **no liability** for misuse of this software
+>
+> By using Vulcan, you agree to use it responsibly and legally. When in doubt, **don't test it**.
+
+---
+
+## 📄 License
 
 MIT License — see [LICENSE](LICENSE) for details.
+
+---
+
+<p align="center">
+  <b>Built with 🌋 by the Vulcan Team</b><br>
+  <sub>If Vulcan helps your security work, consider giving it a ⭐</sub>
+</p>
