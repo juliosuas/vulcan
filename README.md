@@ -290,6 +290,86 @@ How does Vulcan compare to existing tools?
 
 ---
 
+## ✅ Pentest Verification Checklists
+
+Every Vulcan assessment phase includes built-in verification steps to ensure completeness and quality. These checklists are inspired by industry best practices for structured security testing.
+
+### Reconnaissance Verification
+
+| Check | Criteria | How to Confirm |
+|-------|----------|----------------|
+| Subdomain Coverage | All passive + active sources queried | Compare subfinder, amass, and DNS brute results |
+| Port Scan Completeness | Top 1000 ports minimum on all live hosts | Verify nmap scan parameters in output |
+| Service Identification | Version strings extracted for all open ports | Check `-sV` results for "unknown" entries |
+| Technology Stack | Web technologies fingerprinted | Confirm tech detection ran against all HTTP services |
+| Scope Validation | No out-of-scope targets scanned | Cross-reference all scanned IPs/domains against scope document |
+
+### Vulnerability Scanning Verification
+
+| Check | Criteria | How to Confirm |
+|-------|----------|----------------|
+| Template Coverage | Critical + High severity templates executed | Verify nuclei template count in scan output |
+| False Positive Review | Each critical/high finding manually validated | Evidence screenshots or request/response pairs saved |
+| CVE Mapping | Findings mapped to CVE identifiers where applicable | CVE column populated in report findings table |
+| CVSS Scoring | All findings have CVSS v3.1 scores | No "unscored" entries in final report |
+| Remediation Guidance | Each finding has specific fix recommendations | Review report remediation section completeness |
+
+### Exploitation Verification
+
+| Check | Criteria | How to Confirm |
+|-------|----------|----------------|
+| Authorization Check | Exploitation only on explicitly authorized targets | Scope document reviewed before each exploit attempt |
+| Evidence Capture | Proof of exploitation documented | Screenshots, command output, or data samples saved |
+| Impact Assessment | Business impact described for each exploit | Impact field populated in findings |
+| Cleanup | All test artifacts removed from target | Post-exploitation cleanup checklist completed |
+| Chain Documentation | Multi-step exploits documented step-by-step | Attack narrative includes each pivot point |
+
+### Report Quality Verification
+
+| Check | Criteria | How to Confirm |
+|-------|----------|----------------|
+| Executive Summary | Non-technical overview present | Readable by C-suite without security background |
+| Finding Accuracy | No duplicate or contradictory findings | Peer review or AI cross-check completed |
+| Severity Distribution | Ratings align with CVSS + business context | No medium finding with critical business impact |
+| Remediation Priority | Fixes ordered by risk, not just CVSS | Priority considers exploitability and asset value |
+| Evidence Completeness | Each finding has supporting evidence | Every finding links to scan output or screenshots |
+
+---
+
+## 🖥️ Platform Compatibility
+
+| Platform | Architecture | Status | Notes |
+|----------|-------------|--------|-------|
+| Ubuntu 22.04+ | x86_64, ARM64 | ✅ Full | Recommended — all tools available via apt |
+| Debian 12+ | x86_64, ARM64 | ✅ Full | Fully tested |
+| Kali Linux | x86_64 | ✅ Full | Most dependencies pre-installed |
+| Parrot OS | x86_64 | ✅ Full | Security-focused distribution |
+| macOS 13+ | ARM64, x86_64 | ⚠️ Partial | Some tools require Homebrew; nmap works natively |
+| Windows 11 | x86_64 (WSL2) | ⚠️ Partial | Run inside WSL2 Ubuntu for best results |
+| Docker | Any | ✅ Full | `docker-compose up --build` — isolated and portable |
+| Arch Linux | x86_64 | ✅ Full | Community packages available |
+
+### LLM Provider Compatibility
+
+| Provider | Models | Status |
+|----------|--------|--------|
+| Anthropic | Claude 3.5 Sonnet, Claude 3 Opus | ✅ Recommended |
+| OpenAI | GPT-4, GPT-4 Turbo | ✅ Fully supported |
+| Local LLMs | Ollama (Llama 3, Mixtral) | ⚠️ Experimental |
+
+### Tool Compatibility
+
+| Tool | Min Version | Required | Purpose |
+|------|------------|----------|---------|
+| Python | 3.10+ | ✅ | Core runtime |
+| Nmap | 7.80+ | Recommended | Port scanning & service detection |
+| Nuclei | 3.0+ | Recommended | Vulnerability scanning |
+| SQLMap | 1.7+ | Optional | SQL injection testing |
+| Gobuster | 3.5+ | Optional | Directory brute-forcing |
+| Subfinder | 2.6+ | Optional | Subdomain enumeration |
+
+---
+
 ## 🗺️ Roadmap
 
 - [x] Core ReAct loop with Claude/GPT-4
