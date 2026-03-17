@@ -370,6 +370,60 @@ Every Vulcan assessment phase includes built-in verification steps to ensure com
 
 ---
 
+## 🖥️ Platform Compatibility
+
+| Platform | Architecture | Status | Notes |
+|----------|-------------|--------|-------|
+| Ubuntu 22.04+ | x86_64, ARM64 | ✅ Full | Recommended platform |
+| Debian 12+ | x86_64, ARM64 | ✅ Full | Fully tested |
+| Kali Linux | x86_64 | ✅ Full | Most tools pre-installed |
+| Parrot OS | x86_64 | ✅ Full | Security tools included |
+| macOS 13+ | ARM64 (Apple Silicon) | ✅ Full | Homebrew for tool deps |
+| macOS 13+ | x86_64 (Intel) | ✅ Full | Homebrew for tool deps |
+| Windows 11 | x86_64 (WSL2) | ⚠️ Partial | WSL2 with Ubuntu recommended |
+| Arch Linux | x86_64 | ✅ Full | Community tested |
+| Docker | Any | ✅ Full | `docker-compose up` — isolated environment |
+
+### AI Provider Compatibility
+
+| Provider | Models | Status |
+|----------|--------|--------|
+| Anthropic | Claude 3.5 Sonnet, Claude 3 Opus | ✅ Recommended |
+| OpenAI | GPT-4, GPT-4 Turbo | ✅ Fully tested |
+| Local (Ollama) | Llama 3, Mixtral | ⚠️ Experimental |
+
+---
+
+## ✅ Verification & Quality Assurance
+
+Every Vulcan assessment includes built-in verification to ensure finding accuracy and report quality. Use the comprehensive verification checklist to validate results:
+
+📋 **[Full Verification Checklist](docs/verification-checklist.md)** — 35+ checks across 7 categories
+
+### Quick Verification
+
+After any assessment, confirm these critical checks:
+
+| Check | How to Verify | Expected Result |
+|-------|--------------|-----------------|
+| ReAct loop execution | Review Vulcan logs | Reason → Act → Observe cycle visible |
+| Tool execution | Check output for tool results | Tools ran and produced parseable output |
+| Finding accuracy | Manually confirm top 3 findings | ≥80% true positive rate |
+| Report generation | Open generated report | Structured with exec summary + findings |
+| Evidence chain | Follow a finding from detection to proof | Clear, reproducible evidence |
+| Scope compliance | Review all tested targets | No out-of-scope systems contacted |
+| Cleanup | Check for leftover artifacts on target | Clean target post-assessment |
+
+### Confidence Scoring
+
+| Score | Rating | Action |
+|-------|--------|--------|
+| 90-100% verified checks | ✅ High Confidence | Report ready for delivery |
+| 70-89% verified checks | ⚠️ Moderate | Investigate failures before delivery |
+| <70% verified checks | ❌ Low | Re-run affected phases |
+
+---
+
 ## 🗺️ Roadmap
 
 - [x] Core ReAct loop with Claude/GPT-4
