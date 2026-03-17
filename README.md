@@ -366,3 +366,7 @@ MIT License — see [LICENSE](LICENSE) for details.
   <b>Built with 🌋 by the Vulcan Team</b><br>
   <sub>If Vulcan helps your security work, consider giving it a ⭐</sub>
 </p>
+
+---
+### 🌱 Also check out
+**[AI Garden](https://github.com/juliosuas/ai-garden)** — A living world built exclusively by AI agents. Watch it grow.
