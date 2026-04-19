@@ -8,47 +8,109 @@
 ```
 
 <h1 align="center">🌋 VULCAN</h1>
-<p align="center"><b>AI-Powered Autonomous Penetration Testing Agent</b></p>
-<p align="center"><i>Let the AI think. Let the tools execute. Get the report.</i></p>
+<p align="center"><b>The Sovereign AI Pentester</b></p>
+<p align="center"><i>Full-local. Zero API keys. 117 tools. One command.</i></p>
 
 <p align="center">
-  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10%2B-blue?style=flat-square&logo=python&logoColor=white" alt="Python 3.10+"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=flat-square" alt="License: MIT"></a>
-  <a href="https://github.com/juliosuas/vulcan/actions"><img src="https://img.shields.io/badge/build-passing-brightgreen?style=flat-square" alt="Build"></a>
-  <a href="https://github.com/juliosuas/vulcan/issues"><img src="https://img.shields.io/github/issues/juliosuas/vulcan?style=flat-square" alt="Issues"></a>
-  <a href="https://github.com/juliosuas/vulcan/stargazers"><img src="https://img.shields.io/github/stars/juliosuas/vulcan?style=flat-square" alt="Stars"></a>
-  <img src="https://img.shields.io/badge/security-pentest-critical?style=flat-square&logo=hackthebox&logoColor=white" alt="Security">
-  <img src="https://img.shields.io/badge/AI-Claude%20%7C%20GPT--4-purple?style=flat-square&logo=openai&logoColor=white" alt="AI Powered">
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-green?style=for-the-badge" alt="License: MIT"></a>
+  <img src="https://img.shields.io/badge/v2.0-BESTIA_MODE-red?style=for-the-badge" alt="v2.0 Bestia Mode">
+  <img src="https://img.shields.io/badge/tools-117+-orange?style=for-the-badge&logo=hackthebox&logoColor=white" alt="117 Tools">
+  <img src="https://img.shields.io/badge/AI-local_%7C_cloud_%7C_hybrid-purple?style=for-the-badge&logo=openai&logoColor=white" alt="Multi LLM">
+  <img src="https://img.shields.io/badge/data-sovereign-black?style=for-the-badge&logo=tor&logoColor=white" alt="Data Sovereign">
 </p>
 
 <p align="center">
-  <a href="#-how-it-works">How it Works</a> •
-  <a href="#-features">Features</a> •
-  <a href="#-installation">Installation</a> •
-  <a href="#-quick-start">Quick Start</a> •
+  <a href="#-why-vulcan">Why Vulcan</a> •
+  <a href="#-60-second-quick-start">60-Second Quick Start</a> •
+  <a href="#-three-modes-one-binary">Three Modes</a> •
+  <a href="#-how-it-works">How It Works</a> •
   <a href="#-architecture">Architecture</a> •
-  <a href="#-comparison">Comparison</a> •
-  <a href="#-screenshots">Screenshots</a> •
+  <a href="#-how-vulcan-fits-the-landscape">Landscape</a> •
   <a href="#-roadmap">Roadmap</a> •
-  <a href="#-contributing">Contributing</a> •
   <a href="#%EF%B8%8F-disclaimer">Disclaimer</a>
 </p>
 
 ---
 
-## What is Vulcan?
-
-**Vulcan** is an autonomous penetration testing framework that leverages Large Language Models (Claude, GPT-4) to **plan, execute, and report** on security assessments — without constant human intervention.
-
-It uses a **ReAct (Reason → Act → Observe)** loop to intelligently drive the entire pentest pipeline: from reconnaissance through exploitation to professional report generation. Think of it as an AI pentester that wraps industry-standard tools and makes intelligent decisions about what to run next.
-
-> **One command. Full assessment. Professional report.**
+> ### ⚡ **v2.0 — BESTIA Mode just dropped.**
+> One command. Full pentest. **No API keys. No egress. No vendor lock-in.**
+> 117 security tools orchestrated by a ReAct-loop AI agent running entirely on your metal.
+> ```bash
+> ./run-beast.sh scanme.nmap.org
+> ```
 
 ---
 
-## 🔄 How it Works
+## 🤔 Why Vulcan?
 
-Vulcan operates on a **ReAct loop** — the same reasoning pattern used by autonomous AI agents:
+Existing pentest automation forces you to choose:
+
+- **Cloud AI** (Burp, commercial scanners) → your target data leaves the perimeter.
+- **Scriptable tools** (Metasploit, Nuclei) → powerful, but *you* still plan every step.
+- **LLM wrappers** (Claude Code, Copilot) → great for ideation, useless without tool execution.
+
+**Vulcan fuses all three.** A ReAct-loop agent plans the attack. A 127-tool API executes it. An LLM — cloud *or* local — drives decisions. Everything flows into a professional HTML/PDF report. Assessment-ready in one command.
+
+> The AI thinks. The tools execute. You get the report.
+
+### 🎯 Who this is for
+
+- **Red teamers** who want a force-multiplier, not a replacement.
+- **CTF players** who want autonomous recon → exploit chains on HackTheBox / TryHackMe / VulnHub boxes.
+- **Bug bounty hunters** who need to cover wide scope fast.
+- **Security researchers** who refuse to ship target data to third-party clouds.
+- **Consultants** whose clients demand 100% on-prem tooling.
+
+---
+
+## ⚡ 60-Second Quick Start
+
+```bash
+# Clone
+git clone https://github.com/juliosuas/vulcan.git && cd vulcan
+
+# Install
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+
+# Run — full autonomous pentest, local-only (no API keys required)
+./run-beast.sh scanme.nmap.org
+```
+
+That's it. `run-beast.sh` auto-launches the HexStrike API, warms your local LLM, runs the full ReAct pipeline, and opens the HTML report in your browser.
+
+**Want to use Claude instead?**
+```bash
+export ANTHROPIC_API_KEY=sk-ant-...
+vulcan scan --target example.com --llm claude --hexstrike
+```
+
+**Want classic subprocess-only mode?**
+```bash
+vulcan scan --target example.com --llm claude
+```
+
+---
+
+## 🔥 Three Modes. One Binary.
+
+Vulcan exposes two orthogonal axes — the LLM provider and the execution backend — giving you four deployment profiles:
+
+| Mode | Command | LLM | Tools | API keys | Egress | When to use |
+|------|---------|:---:|:---:|:---:|:---:|---|
+| 🔴 **BESTIA** (full-local) | `./run-beast.sh <target>` | smart-llm (Ollama, local) | HexStrike API (117 tools) | ❌ none | ❌ zero | Air-gapped labs · sensitive clients · CTF grind |
+| 🟡 **Hybrid** | `--llm claude --hexstrike` | Claude / GPT-4 | HexStrike API (117 tools) | ✅ LLM only | ⚠️ reasoning only | Best-of-both: heavy iron executing, frontier model thinking |
+| 🟢 **Cloud classic** | `--llm claude` | Claude / GPT-4 | Local subprocess (5 tools) | ✅ LLM only | ⚠️ reasoning only | Laptop, fast iteration, full frontier reasoning |
+| ⚫ **OSS-only** | `--llm openai` + Ollama base URL | Local Ollama model | Local subprocess | ❌ none | ❌ zero | Legacy hosts, minimal install |
+
+**Why this matters:** most "AI pentest" tools lock you into one cloud LLM *and* one tool orchestration choice. Vulcan lets you mix them independently — and switch modes with a single flag.
+
+---
+
+## 🧠 How It Works
+
+Vulcan runs a **ReAct (Reason → Act → Observe)** loop — the canonical autonomous-agent pattern — across four phases:
 
 ```
                     ┌─────────────────────┐
@@ -56,470 +118,422 @@ Vulcan operates on a **ReAct loop** — the same reasoning pattern used by auton
                     │   example.com       │
                     └─────────┬───────────┘
                               │
-                              ▼
-               ┌──────────────────────────────┐
-               │         🧠 REASON            │
-               │   LLM analyzes current state  │
-               │   Plans next action            │
-               │   Prioritizes attack surface   │
-               └──────────────┬───────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │          ⚡ ACT              │
-               │   Execute selected tool       │
-               │   (Nmap, Nuclei, SQLMap...)   │
-               │   Subprocess isolation        │
-               └──────────────┬───────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │        👁️ OBSERVE            │
-               │   Parse tool output           │
-               │   Update knowledge base       │
-               │   Identify new vectors        │
-               └──────────────┬───────────────┘
-                              │
-                     ┌────────┴────────┐
-                     │  More to test?  │
-                     └────────┬────────┘
-                        Yes ↙     ↘ No
-                  (loop back       ▼
-                   to REASON)  ┌────────┐
-                               │ REPORT │
-                               │ 📋     │
-                               └────────┘
+              ┌───────────────┼───────────────┐
+              ▼               ▼               ▼
+        ┌──────────┐   ┌──────────┐   ┌──────────┐
+        │  RECON   │   │ PLANNING │   │ EXECUTION│
+        │ (auto)   │→ │  (LLM)   │→ │ (ReAct)  │
+        └──────────┘   └──────────┘   └─────┬────┘
+                                            │
+                                            ▼
+                                      ┌──────────┐
+                                      │  REPORT  │
+                                      │ HTML/PDF │
+                                      └──────────┘
 ```
 
-Each iteration refines the attack plan based on discovered information. The LLM decides when to pivot, what to investigate deeper, and when the assessment is complete.
+Inside the execution phase, every iteration:
+
+```
+🧠 REASON  ──►  LLM reads state, picks next action, emits JSON
+⚡  ACT     ──►  Vulcan dispatches to module → Executor → tool
+👁️  OBSERVE ──►  Parse output, extract findings, update conversation
+         ↑                                                    │
+         └────────────────── loop ←─────────────────────────┘
+                     (up to max_iterations=50)
+```
+
+The LLM decides when to pivot, what to investigate deeper, when to drop a thread, and when the assessment is complete.
 
 ---
 
 ## ✨ Features
 
-| Feature | Description | Status |
-|---------|-------------|--------|
-| 🧠 AI-Driven Planning | LLM-powered attack planning that adapts in real-time | ✅ |
-| 🔄 ReAct Loop | Autonomous Reason → Act → Observe cycle | ✅ |
-| 📡 Full Recon Pipeline | Subdomains, ports, tech stack, directories | ✅ |
-| 🔍 Vulnerability Scanning | Automated vuln discovery with Nuclei + custom checks | ✅ |
-| 💉 Exploitation | SQLi, XSS, command injection via integrated tools | ✅ |
-| 📊 Professional Reports | HTML/PDF reports with severity ratings & remediation | ✅ |
-| 🤖 Multi-LLM Support | Anthropic Claude & OpenAI GPT-4 | ✅ |
-| 🖥️ Rich CLI | Beautiful terminal UI with progress bars & tables | ✅ |
-| 🌐 Web Dashboard | Single-file HTML dashboard for monitoring | ✅ |
-| 🐳 Docker Support | Isolated container environment | ✅ |
-| 🔒 Safe Execution | Subprocess isolation with timeouts | ✅ |
-| 🧩 Modular Architecture | Easy to extend with new modules | ✅ |
+| Feature | Description | v1 | v2 |
+|---|---|:---:|:---:|
+| 🧠 AI-driven attack planning | LLM plans & re-plans in real time | ✅ | ✅ |
+| 🔄 ReAct (Reason → Act → Observe) loop | Canonical autonomous-agent pattern | ✅ | ✅ |
+| 📡 Full recon pipeline | Subdomains · ports · tech · dirs · DNS | ✅ | ✅ |
+| 🔍 Automated vuln scanning | Nuclei + custom checks | ✅ | ✅ |
+| 💉 Exploitation modules | SQLi · XSS · SSRF · CMD injection | ✅ | ✅ |
+| 📊 Professional reports | HTML (validated) + PDF via weasyprint (optional) | ✅ | ✅ |
+| 🤖 Claude / GPT-4 support | Frontier cloud LLMs | ✅ | ✅ |
+| 🖥️ Rich CLI | Beautiful terminal UI | ✅ | ✅ |
+| 🐳 Docker | Isolated execution | ✅ | ✅ |
+| 🔴 **BESTIA mode** | **Full-local, zero API keys** | — | ✅ |
+| ⚔️ **HexStrike integration** | **5 → 127 security tools** | — | ✅ |
+| 🚀 **smart-llm routing** | **Local Ollama via heuristic router** | — | ✅ |
+| 🛡️ **Data sovereignty** | **Target data never leaves your host** | — | ✅ |
+| 🔀 **Mix-and-match modes** | **LLM × executor independent axes** | — | ✅ |
+| 🧩 **Graceful fallback** | **Auto-fallback to local subprocess if API down** | — | ✅ |
 
 ---
 
-## 📦 Installation
+## 📊 How Vulcan fits the landscape
 
-### Option 1: pip (Recommended)
+| Capability | Vulcan v2 | Metasploit | Burp Pro | Nuclei |
+|---|:---:|:---:|:---:|:---:|
+| AI-driven planning | ✅ | ❌ | ❌ | ❌ |
+| Autonomous ReAct loop | ✅ | ❌ | ❌ | ❌ |
+| Recon → Exploit → Report pipeline | ✅ | ⚠️ Manual | ⚠️ Manual | ❌ Scan only |
+| Multi-tool orchestration | ✅ 117 tools | ❌ Single | ❌ Single | ❌ Single |
+| Runs 100% local (no cloud) | ✅ | ✅ | ❌ | ✅ |
+| **Local LLM reasoning** | ✅ | ❌ | ❌ | ❌ |
+| **Zero egress mode** | ✅ | ✅ | ❌ | ✅ |
+| Auto-generated reports | ✅ HTML (PDF opt.) | ⚠️ Basic | ✅ | ⚠️ JSON |
+| Natural language control | ✅ | ❌ | ❌ | ❌ |
+| Open source | ✅ MIT | ✅ | ❌ | ✅ MIT |
+| Docker ready | ✅ | ✅ | ❌ | ✅ |
 
-```bash
-pip install vulcan-pentest
-```
-
-### Option 2: From Source
-
-```bash
-git clone https://github.com/juliosuas/vulcan.git
-cd vulcan
-pip install -e .
-```
-
-### Option 3: Docker
-
-```bash
-git clone https://github.com/juliosuas/vulcan.git
-cd vulcan
-docker-compose up --build
-```
-
-### Configuration
-
-```bash
-cp .env.example .env
-```
-
-Add your API keys to `.env`:
-
-```env
-ANTHROPIC_API_KEY=sk-ant-...
-OPENAI_API_KEY=sk-...
-```
-
-### External Tools (Optional)
-
-Vulcan gracefully degrades if tools are missing, but for full coverage install:
-
-| Tool | Purpose | Install |
-|------|---------|---------|
-| [Nmap](https://nmap.org/) | Port scanning & service detection | `apt install nmap` |
-| [Nuclei](https://github.com/projectdiscovery/nuclei) | Vulnerability scanning | `go install github.com/projectdiscovery/nuclei/v3/cmd/nuclei@latest` |
-| [SQLMap](https://sqlmap.org/) | SQL injection testing | `pip install sqlmap` |
-| [Gobuster](https://github.com/OJ/gobuster) | Directory & DNS brute-forcing | `go install github.com/OJ/gobuster/v3@latest` |
-| [Subfinder](https://github.com/projectdiscovery/subfinder) | Subdomain enumeration | `go install github.com/projectdiscovery/subfinder/v2/cmd/subfinder@latest` |
-
----
-
-## 🚀 Quick Start
-
-### 1. Quick Scan (fastest)
-
-```bash
-vulcan scan --target example.com
-```
-
-### 2. Full Assessment with Claude
-
-```bash
-vulcan scan --target example.com --mode full --llm claude --report html
-```
-
-### 3. Recon Only
-
-```bash
-vulcan recon --target example.com --modules subdomains,ports,tech
-```
-
-### 4. Generate Report from Existing Data
-
-```bash
-vulcan report --input ./vulcan_output/example.com --format pdf
-```
-
-### CLI Reference
-
-```
-Usage: vulcan [OPTIONS] COMMAND [ARGS]
-
-Commands:
-  scan     Run a full penetration test
-  recon    Run reconnaissance only
-  report   Generate report from scan data
-
-Options:
-  --target, -t    Target domain or IP
-  --mode, -m      Scan mode: quick | standard | full (default: standard)
-  --llm           LLM provider: claude | openai (default: claude)
-  --report        Report format: html | pdf | json (default: html)
-  --output, -o    Output directory (default: ./vulcan_output)
-  --config, -c    Path to config file
-  --verbose, -v   Verbose output
-  --help          Show this help message
-```
+> **Vulcan doesn't replace these tools — it orchestrates them.** Nmap, Nuclei, SQLMap, Gobuster, Subfinder, Hydra, NetExec, MSFVenom, Hashcat, FFuf, WPScan, Amass, and 100+ more run underneath, guided by AI.
+>
+> *Other autonomous-pentest projects exist (PentestGPT, Shennina, etc.) — Vulcan's differentiator is the independently swappable LLM × executor axes and the full-local BESTIA mode.*
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-┌──────────────────────────────────────────────────┐
-│                  VulcanAgent                      │
-│             (ReAct Orchestrator)                  │
-├────────────────┬──────────────┬──────────────────┤
-│    Planner     │   Executor   │    Reporter      │
-│  (LLM-based   │ (Subprocess  │  (HTML/PDF       │
-│   reasoning)   │  isolation)  │   generation)    │
-├────────────────┴──────────────┴──────────────────┤
-│                   Modules                         │
-│  ┌─────────┐ ┌──────────┐ ┌──────────┐          │
-│  │  Recon  │ │ Scanner  │ │ Exploit  │          │
-│  └─────────┘ └──────────┘ └──────────┘          │
-│  ┌─────────┐ ┌──────────┐                        │
-│  │   Web   │ │ Network  │                        │
-│  └─────────┘ └──────────┘                        │
-├──────────────────────────────────────────────────┤
-│               Tool Wrappers                       │
-│  Nmap · Nuclei · SQLMap · Gobuster · Subfinder   │
-└──────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────────────┐
+│                        VulcanAgent                               │
+│                    (ReAct Orchestrator)                          │
+├──────────────┬──────────────────┬──────────────┬────────────────┤
+│   Planner    │      LLM         │   Executor   │   Reporter     │
+│  (strategy)  │ ─────────────    │ ─────────────│ (HTML/PDF/JSON)│
+│              │  • Anthropic     │  • Subproc   │                │
+│              │  • OpenAI        │  • HexStrike │                │
+│              │  • smart-llm ⚡  │    API :8888 │                │
+├──────────────┴──────────────────┴──────────────┴────────────────┤
+│                             Modules                              │
+│  ┌─────────┐ ┌──────────┐ ┌──────────┐ ┌──────┐ ┌──────────┐   │
+│  │  Recon  │ │ Scanner  │ │ Exploit  │ │ Web  │ │ Network  │   │
+│  └─────────┘ └──────────┘ └──────────┘ └──────┘ └──────────┘   │
+├──────────────────────────────────────────────────────────────────┤
+│                       Execution Layer                            │
+│   Local subprocess  ◄─────── OR ───────►  HexStrike API :8888   │
+│   (5 tools by default)                     (117 tools, shared)   │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+### The key insight
+
+Vulcan's executor is **swappable at init time**:
+
+- `Executor` → runs `nmap -sV target` via `asyncio.create_subprocess_shell` on localhost.
+- `HexStrikeExecutor` → parses the same command, POSTs to `/api/tools/nmap` on a remote HexStrike server, returns the same `ExecutionResult`.
+
+**Modules, tool wrappers, and the ReAct loop don't change.** You swap the executor with `--hexstrike` and you're now orchestrating 117 tools instead of 5, with caching, concurrency, and graceful fallback baked in.
+
+---
+
+## 🚀 Installation
+
+### Option 1: Full install (recommended)
+
+```bash
+git clone https://github.com/juliosuas/vulcan.git
+cd vulcan
+python3 -m venv venv && source venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Option 2: Docker
+
+```bash
+git clone https://github.com/juliosuas/vulcan.git
+cd vulcan
+docker compose up --build
+```
+
+### Option 3: Pip (coming soon)
+
+```bash
+pip install vulcan-pentest
+```
+
+### Config
+
+```bash
+cp .env.example .env
+# Edit .env with your keys (optional — BESTIA mode needs none)
+```
+
+```env
+ANTHROPIC_API_KEY=sk-ant-...
+OPENAI_API_KEY=sk-...
+VULCAN_LLM_PROVIDER=smartllm        # claude | openai | smartllm
+VULCAN_USE_HEXSTRIKE=1              # route through HexStrike :8888
+VULCAN_HEXSTRIKE_SERVER=http://127.0.0.1:8888
+VULCAN_SMARTLLM_BIN=smart-llm       # or absolute path
+```
+
+### Optional: local LLM stack (for BESTIA mode)
+
+Install [Ollama](https://ollama.com), pull a model, and install [`smart-llm`](https://github.com/juliosuas/smart-llm) (the heuristic router):
+
+```bash
+curl -fsSL https://ollama.com/install.sh | sh
+ollama pull qwen3:32b        # recommended for reasoning
+ollama pull qwen2.5-coder:7b # for code/payload tasks
+```
+
+### Optional: HexStrike AI (for 127-tool mode)
+
+```bash
+git clone https://github.com/0x4m4/hexstrike-ai.git
+cd hexstrike-ai && python3 -m venv hexstrike-env && source hexstrike-env/bin/activate
+pip install -r requirements.txt
+./hexstrike_server.py   # Flask API on :8888
 ```
 
 ---
 
-## 📊 Comparison
+## 📖 Usage
 
-How does Vulcan compare to existing tools?
+### BESTIA — zero keys, full pipeline
 
-| Capability | Vulcan | Metasploit | Burp Suite | Nuclei |
-|-----------|--------|------------|------------|--------|
-| AI-driven planning | ✅ | ❌ | ❌ | ❌ |
-| Autonomous execution | ✅ | ❌ | ❌ | ⚠️ Partial |
-| ReAct reasoning loop | ✅ | ❌ | ❌ | ❌ |
-| Recon → Exploit → Report | ✅ Full pipeline | ⚠️ Manual | ⚠️ Manual | ❌ Scan only |
-| Auto-generated reports | ✅ HTML/PDF | ⚠️ Basic | ✅ | ⚠️ JSON |
-| Multi-tool orchestration | ✅ | ❌ Single | ❌ Single | ❌ Single |
-| Natural language control | ✅ | ❌ | ❌ | ❌ |
-| Open source | ✅ MIT | ✅ | ❌ Commercial | ✅ MIT |
-| Docker ready | ✅ | ✅ | ❌ | ✅ |
+```bash
+./run-beast.sh <target> [quick|standard|full]
+```
 
-> **Vulcan doesn't replace these tools — it orchestrates them.** It uses Nmap, Nuclei, SQLMap, and others under the hood, guided by AI decision-making.
+### Classic scan (cloud LLM)
+
+```bash
+vulcan scan --target example.com --llm claude --mode full
+```
+
+### Hybrid (cloud LLM + HexStrike)
+
+```bash
+vulcan scan --target example.com --llm claude --hexstrike
+```
+
+### Recon only
+
+```bash
+vulcan recon --target example.com --modules subdomains,ports,tech,dirs,dns
+```
+
+### Generate report from existing data
+
+```bash
+vulcan report --input ./vulcan_output/example.com --format html
+# PDF: pip install weasyprint && vulcan report --input ./vulcan_output/example.com --format pdf
+```
+
+### All flags
+
+```
+vulcan scan --help
+
+  --target, -t               Target domain or IP              [required]
+  --mode, -m                 quick | standard | full          [standard]
+  --llm                      claude | openai | smartllm       [claude]
+  --local                    Shortcut: --llm smartllm --hexstrike
+  --hexstrike/--no-hexstrike Route tools through HexStrike    [off]
+  --hexstrike-url            HexStrike server URL             [http://127.0.0.1:8888]
+  --report                   html | pdf | json                [html]
+  --output, -o               Output directory                 [./vulcan_output]
+  --config, -c               YAML config path
+  --verbose, -v              Verbose output
+```
 
 ---
 
-## 📸 Screenshots
+## 🔬 How BESTIA Mode Works Under the Hood
 
-<details>
-<summary><b>🖥️ Rich CLI Interface</b></summary>
-<br>
-<p align="center">
-  <i>Screenshot: Terminal output showing scan progress with Rich tables and progress bars</i>
-</p>
+```
+┌─────────────────────────────────────────────────────────┐
+│  ./run-beast.sh scanme.nmap.org                         │
+└──────────┬──────────────────────────────────────────────┘
+           │
+    ┌──────▼──────────┐        ┌──────────────────────┐
+    │ Preflight       │───────►│ curl :8888/health    │
+    │                 │        │ if down → start      │
+    └──────┬──────────┘        └──────────────────────┘
+           │
+    ┌──────▼──────────┐        ┌──────────────────────┐
+    │ Warm smart-llm  │───────►│ Ollama models → VRAM │
+    │                 │        │ (avoid cold-start)   │
+    └──────┬──────────┘        └──────────────────────┘
+           │
+    ┌──────▼──────────┐
+    │ vulcan scan     │──── ReAct loop ──► smart-llm (qwen3:32b)
+    │   --local       │                         │
+    │                 │                         ▼
+    │                 │                    JSON action
+    │                 │                         │
+    │                 │         ┌───────────────┘
+    │                 ▼         ▼
+    │        ┌────────────────────────┐
+    │        │  HexStrikeExecutor     │──POST /api/tools/nmap──►  HexStrike :8888
+    │        │  (aiohttp + semaphore) │                           │
+    │        │                        │◄───JSON result─────────── ↓
+    │        └────────────────────────┘                      [subprocess · caching · recovery]
+    │                 │
+    │                 ▼
+    │        Finding extracted → Reporter
+    │
+    └──► xdg-open vulcan_output/*.html
+```
 
-> Run `vulcan scan --target example.com --verbose` to see it in action.
-</details>
-
-<details>
-<summary><b>📊 HTML Report</b></summary>
-<br>
-<p align="center">
-  <i>Screenshot: Professional HTML report with findings, severity ratings, and remediation guidance</i>
-</p>
-</details>
-
-<details>
-<summary><b>🌐 Web Dashboard</b></summary>
-<br>
-<p align="center">
-  <i>Screenshot: Real-time web dashboard showing scan progress and discovered findings</i>
-</p>
-</details>
+Every component degrades gracefully:
+- **HexStrike down** → `HexStrikeExecutor.fallback_local=True` silently falls back to subprocess.
+- **smart-llm missing** → raises with exact env var to set.
+- **Model cold** → `run-beast.sh --warmup` keeps them hot in VRAM with `keep_alive=24h`.
 
 ---
 
-## ✅ Pentest Verification Checklists
+## ✅ Built-in Pentest Verification
 
-Every Vulcan assessment phase includes built-in verification steps to ensure completeness and quality. These checklists are inspired by industry best practices for structured security testing.
+Every Vulcan run includes verification checklists inspired by industry methodology:
 
-### Reconnaissance Verification
+### Reconnaissance
+| Check | Criteria | How to confirm |
+|---|---|---|
+| Subdomain coverage | All passive + active sources queried | Compare subfinder/amass/DNS results |
+| Port scan completeness | Top 1000+ on all live hosts | Verify nmap params in output |
+| Service identification | Versions extracted for all open ports | Check `-sV` for "unknown" entries |
+| Scope compliance | No out-of-scope targets contacted | Cross-reference scope doc |
 
-| Check | Criteria | How to Confirm |
-|-------|----------|----------------|
-| Subdomain Coverage | All passive + active sources queried | Compare subfinder, amass, and DNS brute results |
-| Port Scan Completeness | Top 1000 ports minimum on all live hosts | Verify nmap scan parameters in output |
-| Service Identification | Version strings extracted for all open ports | Check `-sV` results for "unknown" entries |
-| Technology Stack | Web technologies fingerprinted | Confirm tech detection ran against all HTTP services |
-| Scope Validation | No out-of-scope targets scanned | Cross-reference all scanned IPs/domains against scope document |
+### Vulnerability Scanning
+| Check | Criteria | How to confirm |
+|---|---|---|
+| Template coverage | Critical + High executed | Verify nuclei template count |
+| False-positive review | Each critical/high validated | Request/response pairs saved |
+| CVE mapping | Findings mapped to CVE IDs | CVE column populated in report |
+| Remediation guidance | Fix rec per finding | Review report remediation section |
 
-### Vulnerability Scanning Verification
+### Exploitation
+| Check | Criteria | How to confirm |
+|---|---|---|
+| Authorization | Explicit written permission | Scope doc reviewed before exploit |
+| Evidence capture | Proof documented | Screenshots / request-response saved |
+| Impact assessment | Business impact described | Impact field populated |
+| Cleanup | All test artifacts removed | Post-exploitation checklist done |
 
-| Check | Criteria | How to Confirm |
-|-------|----------|----------------|
-| Template Coverage | Critical + High severity templates executed | Verify nuclei template count in scan output |
-| False Positive Review | Each critical/high finding manually validated | Evidence screenshots or request/response pairs saved |
-| CVE Mapping | Findings mapped to CVE identifiers where applicable | CVE column populated in report findings table |
-| CVSS Scoring | All findings have CVSS v3.1 scores | No "unscored" entries in final report |
-| Remediation Guidance | Each finding has specific fix recommendations | Review report remediation section completeness |
-
-### Exploitation Verification
-
-| Check | Criteria | How to Confirm |
-|-------|----------|----------------|
-| Authorization Check | Exploitation only on explicitly authorized targets | Scope document reviewed before each exploit attempt |
-| Evidence Capture | Proof of exploitation documented | Screenshots, command output, or data samples saved |
-| Impact Assessment | Business impact described for each exploit | Impact field populated in findings |
-| Cleanup | All test artifacts removed from target | Post-exploitation cleanup checklist completed |
-| Chain Documentation | Multi-step exploits documented step-by-step | Attack narrative includes each pivot point |
-
-### Report Quality Verification
-
-| Check | Criteria | How to Confirm |
-|-------|----------|----------------|
-| Executive Summary | Non-technical overview present | Readable by C-suite without security background |
-| Finding Accuracy | No duplicate or contradictory findings | Peer review or AI cross-check completed |
-| Severity Distribution | Ratings align with CVSS + business context | No medium finding with critical business impact |
-| Remediation Priority | Fixes ordered by risk, not just CVSS | Priority considers exploitability and asset value |
-| Evidence Completeness | Each finding has supporting evidence | Every finding links to scan output or screenshots |
+### Report Quality
+| Check | Criteria | How to confirm |
+|---|---|---|
+| Exec summary | Non-technical overview present | Readable by C-suite |
+| Finding accuracy | No dupes/contradictions | Peer review or AI cross-check |
+| Severity distribution | Aligns with CVSS + business context | No Medium with Critical impact |
+| Remediation priority | Ordered by risk, not CVSS alone | Considers exploitability + asset value |
 
 ---
 
 ## 🖥️ Platform Compatibility
 
-| Platform | Architecture | Status | Notes |
-|----------|-------------|--------|-------|
-| Ubuntu 22.04+ | x86_64, ARM64 | ✅ Full | Recommended — all tools available via apt |
-| Debian 12+ | x86_64, ARM64 | ✅ Full | Fully tested |
-| Kali Linux | x86_64 | ✅ Full | Most dependencies pre-installed |
-| Parrot OS | x86_64 | ✅ Full | Security-focused distribution |
-| macOS 13+ | ARM64, x86_64 | ⚠️ Partial | Some tools require Homebrew; nmap works natively |
-| Windows 11 | x86_64 (WSL2) | ⚠️ Partial | Run inside WSL2 Ubuntu for best results |
-| Docker | Any | ✅ Full | `docker-compose up --build` — isolated and portable |
-| Arch Linux | x86_64 | ✅ Full | Community packages available |
+| Platform | Status | Notes |
+|---|:---:|---|
+| Debian 12 | ✅ Tested | Primary dev + validation platform |
+| Kali / Parrot | 🟢 Expected | Derivatives of Debian; most tools pre-installed |
+| Ubuntu 22.04+ | 🟢 Expected | Debian-family; should work out of the box |
+| Arch / Fedora | 🟡 Untested | Python deps portable; tool install paths differ |
+| macOS 13+ (Apple Silicon) | 🟡 Untested | Homebrew for Nmap/Nuclei; Ollama native |
+| Windows 11 (WSL2) | 🟡 Untested | Run inside Ubuntu for best results |
+| Docker | 🟢 Expected | `docker compose up --build` (Dockerfile + compose file shipped, validation pending) |
 
-### LLM Provider Compatibility
+> **Current validation status (v2.0):** end-to-end pipeline (recon → planning → ReAct → HTML report) validated against `scanme.nmap.org` on Debian 12 in both `--local` (BESTIA) and `--llm claude --hexstrike` (hybrid) modes. PDF export uses `weasyprint` (optional dep, untested this release). Other platforms expected to work but not independently verified yet — PRs confirming are welcome.
 
-| Provider | Models | Status |
-|----------|--------|--------|
-| Anthropic | Claude 3.5 Sonnet, Claude 3 Opus | ✅ Recommended |
-| OpenAI | GPT-4, GPT-4 Turbo | ✅ Fully supported |
-| Local LLMs | Ollama (Llama 3, Mixtral) | ⚠️ Experimental |
+### LLM Compatibility
 
-### Tool Compatibility
-
-| Tool | Min Version | Required | Purpose |
-|------|------------|----------|---------|
-| Python | 3.10+ | ✅ | Core runtime |
-| Nmap | 7.80+ | Recommended | Port scanning & service detection |
-| Nuclei | 3.0+ | Recommended | Vulnerability scanning |
-| SQLMap | 1.7+ | Optional | SQL injection testing |
-| Gobuster | 3.5+ | Optional | Directory brute-forcing |
-| Subfinder | 2.6+ | Optional | Subdomain enumeration |
-
----
-
-## 🖥️ Platform Compatibility
-
-| Platform | Architecture | Status | Notes |
-|----------|-------------|--------|-------|
-| Ubuntu 22.04+ | x86_64, ARM64 | ✅ Full | Recommended platform |
-| Debian 12+ | x86_64, ARM64 | ✅ Full | Fully tested |
-| Kali Linux | x86_64 | ✅ Full | Most tools pre-installed |
-| Parrot OS | x86_64 | ✅ Full | Security tools included |
-| macOS 13+ | ARM64 (Apple Silicon) | ✅ Full | Homebrew for tool deps |
-| macOS 13+ | x86_64 (Intel) | ✅ Full | Homebrew for tool deps |
-| Windows 11 | x86_64 (WSL2) | ⚠️ Partial | WSL2 with Ubuntu recommended |
-| Arch Linux | x86_64 | ✅ Full | Community tested |
-| Docker | Any | ✅ Full | `docker-compose up` — isolated environment |
-
-### AI Provider Compatibility
-
-| Provider | Models | Status |
-|----------|--------|--------|
-| Anthropic | Claude 3.5 Sonnet, Claude 3 Opus | ✅ Recommended |
-| OpenAI | GPT-4, GPT-4 Turbo | ✅ Fully tested |
-| Local (Ollama) | Llama 3, Mixtral | ⚠️ Experimental |
-
----
-
-## ✅ Verification & Quality Assurance
-
-Every Vulcan assessment includes built-in verification to ensure finding accuracy and report quality. Use the comprehensive verification checklist to validate results:
-
-📋 **[Full Verification Checklist](docs/verification-checklist.md)** — 35+ checks across 7 categories
-
-### Quick Verification
-
-After any assessment, confirm these critical checks:
-
-| Check | How to Verify | Expected Result |
-|-------|--------------|-----------------|
-| ReAct loop execution | Review Vulcan logs | Reason → Act → Observe cycle visible |
-| Tool execution | Check output for tool results | Tools ran and produced parseable output |
-| Finding accuracy | Manually confirm top 3 findings | ≥80% true positive rate |
-| Report generation | Open generated report | Structured with exec summary + findings |
-| Evidence chain | Follow a finding from detection to proof | Clear, reproducible evidence |
-| Scope compliance | Review all tested targets | No out-of-scope systems contacted |
-| Cleanup | Check for leftover artifacts on target | Clean target post-assessment |
-
-### Confidence Scoring
-
-| Score | Rating | Action |
-|-------|--------|--------|
-| 90-100% verified checks | ✅ High Confidence | Report ready for delivery |
-| 70-89% verified checks | ⚠️ Moderate | Investigate failures before delivery |
-| <70% verified checks | ❌ Low | Re-run affected phases |
+| Provider | Models | BESTIA? | Notes |
+|---|---|:---:|---|
+| Anthropic | Claude Sonnet 4 / Opus | ❌ (cloud) | Recommended for frontier reasoning |
+| OpenAI | GPT-4o / GPT-4 Turbo | ❌ (cloud) | Fully supported |
+| **smart-llm + Ollama** | **qwen3:32b / qwen2.5-coder:7b** | ✅ | **Default in BESTIA mode** |
+| LiteLLM proxy | 100+ models | ⚠️ Experimental | Via OpenAI-compatible base URL |
 
 ---
 
 ## 🗺️ Roadmap
 
 - [x] Core ReAct loop with Claude/GPT-4
-- [x] Nmap, Nuclei, SQLMap, Gobuster integration
-- [x] HTML/PDF report generation
-- [x] Rich CLI interface
+- [x] Recon · Scanner · Exploit · Web · Network modules
+- [x] HTML/PDF/JSON report generation
+- [x] Rich CLI + beautiful terminal UI
 - [x] Docker support
-- [x] Web dashboard
+- [x] **v2.0 — HexStrike integration (117 tools)**
+- [x] **v2.0 — smart-llm local-only mode**
+- [x] **v2.0 — Graceful subprocess fallback**
+- [x] **v2.0 — Hybrid mode (cloud LLM + local exec)**
 - [ ] 🔜 Plugin system for custom tool integration
 - [ ] 🔜 Multi-target campaign mode
 - [ ] 🔜 API server mode (REST + WebSocket)
-- [ ] 🔜 Collaborative mode (multiple agents)
-- [ ] OWASP ZAP integration
-- [ ] Custom wordlist management
-- [ ] Scan scheduling & cron support
-- [ ] Slack/Discord notifications
-- [ ] Cloud deployment templates (AWS/GCP)
-- [ ] CVSS scoring integration
-- [ ] Evidence chain & attack path visualization
+- [ ] 🔜 Collaborative mode (agent swarms)
+- [ ] 🔜 MITRE ATT&CK mapping per finding
+- [ ] 🔜 Evidence chain visualization (graph)
+- [ ] 🔜 OWASP ZAP integration
+- [ ] 🔜 Slack / Discord / Telegram webhooks
+- [ ] 🔜 Cloud deployment templates (AWS/GCP)
+- [ ] 🔜 CTF-specific heuristics (flag sniffing, well-known ports)
+- [ ] 🔜 Replay mode (re-run from cached output, zero tool exec)
 
 ---
 
 ## 🤝 Contributing
 
-Contributions are welcome! Here's how to get started:
+PRs are welcome — especially new tool wrappers, additional LLM providers, and report templates.
 
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feat/awesome-feature`
-3. **Commit** your changes: `git commit -m 'Add awesome feature'`
-4. **Push** to the branch: `git push origin feat/awesome-feature`
-5. **Open** a Pull Request
-
-### Development Setup
-
-```bash
-git clone https://github.com/juliosuas/vulcan.git
-cd vulcan
-pip install -e ".[dev]"
-python -m pytest tests/
-```
+1. Fork → `git checkout -b feat/your-feature`
+2. `pip install -e ".[dev]"`
+3. `python -m pytest tests/`
+4. Open a PR with a clear description
 
 ### Guidelines
-
-- Follow existing code style and patterns
+- Follow existing code style (Black, 100 char lines)
 - Add tests for new features
-- Update documentation as needed
 - Keep PRs focused and atomic
+- New tool wrappers must subclass `ToolWrapper` in `tools/wrapper.py`
+- New LLM providers must implement `_call_llm()` in `core/agent.py`
 
 ---
 
 ## ⚠️ Disclaimer
 
-> **⚠️ IMPORTANT: AUTHORIZED USE ONLY**
+> **⚠️ AUTHORIZED USE ONLY**
 >
-> Vulcan is designed and intended **exclusively for authorized security testing and educational purposes**.
+> Vulcan is designed **exclusively for authorized security testing and educational purposes**.
 >
-> - **Always** obtain **explicit written permission** before testing any system
-> - **Never** use this tool against systems you do not own or have authorization to test
-> - Unauthorized access to computer systems is **illegal** in most jurisdictions
-> - Users are **solely responsible** for ensuring compliance with all applicable laws
-> - The authors and contributors assume **no liability** for misuse of this software
+> - **Always** obtain **explicit written permission** before testing any system.
+> - **Never** use this tool against systems you do not own or have authorization to test.
+> - Unauthorized access to computer systems is **illegal** in most jurisdictions.
+> - Users are **solely responsible** for ensuring compliance with all applicable laws.
+> - The authors and contributors assume **no liability** for misuse.
 >
-> By using Vulcan, you agree to use it responsibly and legally. When in doubt, **don't test it**.
+> By using Vulcan, you agree to use it responsibly and legally. When in doubt, **don't run it**.
+
+**Legal testing sandboxes to learn on:** `scanme.nmap.org` · [HackTheBox](https://hackthebox.com) · [TryHackMe](https://tryhackme.com) · [VulnHub](https://vulnhub.com) · [DVWA](https://github.com/digininja/DVWA) · [OWASP Juice Shop](https://owasp.org/www-project-juice-shop/).
 
 ---
 
 ## 📄 License
 
-MIT License — see [LICENSE](LICENSE) for details.
+MIT — see [LICENSE](LICENSE).
 
 ---
 
 <p align="center">
-  <b>Built with 🌋 by the Vulcan Team</b><br>
-  <sub>If Vulcan helps your security work, consider giving it a ⭐</sub>
+  <b>Built with 🌋 by <a href="https://github.com/juliosuas">@juliosuas</a></b><br>
+  <sub>If Vulcan saves you a weekend, consider dropping a ⭐</sub>
+</p>
+
+<p align="center">
+  <a href="https://github.com/juliosuas/vulcan/stargazers"><img src="https://img.shields.io/github/stars/juliosuas/vulcan?style=social" alt="Stars"></a>
+  <a href="https://github.com/juliosuas/vulcan/network/members"><img src="https://img.shields.io/github/forks/juliosuas/vulcan?style=social" alt="Forks"></a>
+  <a href="https://github.com/juliosuas/vulcan/watchers"><img src="https://img.shields.io/github/watchers/juliosuas/vulcan?style=social" alt="Watchers"></a>
 </p>
 
 ---
-### 🌱 Also check out
-**[AI Garden](https://github.com/juliosuas/ai-garden)** — A living world built exclusively by AI agents. Watch it grow.
 
----
+### 🌱 Also from @juliosuas
+- **[Ghost](https://github.com/juliosuas/ghost)** — AI-powered OSINT platform
+- **[Phantom](https://github.com/juliosuas/phantom)** — LLM red teaming · OWASP Top 10 for LLMs
+- **[Sentinel](https://github.com/juliosuas/sentinel)** — AI-powered SOC · real-time log analysis
+- **[Cerberus](https://github.com/juliosuas/cerberus)** — Security-as-a-Service for SMBs
+- **[AI Garden](https://github.com/juliosuas/ai-garden)** — A pixel-art world built by AI agents. Watch it grow.
 
-## ✅ Verification & Quality Assurance
-
-Every Vulcan pentest follows rigorous verification checklists to ensure complete coverage and accurate findings. See [`docs/verification-checklist.md`](docs/verification-checklist.md) for the full methodology.
-
-## 🖥️ Platform Compatibility
-
-| Platform | Status | Notes |
-|----------|--------|-------|
-| Kali Linux | ✅ Full | Primary development platform |
-| Ubuntu/Debian | ✅ Full | 22.04+ recommended |
-| macOS | ✅ Full | Apple Silicon native |
-| Parrot OS | ✅ Full | Security edition |
-| Docker | ✅ Full | `docker-compose up` |
-| Windows (WSL2) | ⚠️ Partial | Some tools require native Linux |
-| Arch Linux | ✅ Full | AUR package available |
-
+### 🙏 Built on top of
+- **[HexStrike AI](https://github.com/0x4m4/hexstrike-ai)** by [@0x4m4](https://github.com/0x4m4) — the 117-tool Flask API that powers BESTIA mode's execution layer.
+- **[Ollama](https://ollama.com)** — the local LLM runtime.

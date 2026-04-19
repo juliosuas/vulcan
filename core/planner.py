@@ -90,6 +90,8 @@ class Planner:
         if self.config.llm_provider == "claude":
             import anthropic
             self._client = anthropic.Anthropic(api_key=self.config.anthropic_api_key)
+        elif self.config.llm_provider == "smartllm":
+            self._client = "smartllm"  # sentinel — we shell out to the binary
         else:
             import openai
             self._client = openai.OpenAI(api_key=self.config.openai_api_key)
@@ -130,16 +132,47 @@ class Planner:
                 messages=[{"role": "user", "content": user}],
             )
             return resp.content[0].text
-        else:
-            resp = client.chat.completions.create(
-                model="gpt-4o",
-                max_tokens=4096,
-                messages=[
-                    {"role": "system", "content": system},
-                    {"role": "user", "content": user},
+        if self.config.llm_provider == "smartllm":
+            return self._call_smartllm(system, user)
+        resp = client.chat.completions.create(
+            model="gpt-4o",
+            max_tokens=4096,
+            messages=[
+                {"role": "system", "content": system},
+                {"role": "user", "content": user},
+            ],
+        )
+        return resp.choices[0].message.content
+
+    def _call_smartllm(self, system: str, user: str) -> str:
+        import subprocess
+
+        prompt = (
+            f"[SYSTEM]\n{system}\n\n"
+            f"[USER]\n{user}\n\n"
+            "[ASSISTANT]\nReply with ONLY the JSON object — no prose, no code fences.\n"
+        )
+        try:
+            proc = subprocess.run(
+                [
+                    self.config.smartllm_binary,
+                    prompt,
+                    "--task", "reason",
+                    "--keep-alive", "24h",
+                    "--max-tokens", "4096",
                 ],
+                capture_output=True,
+                text=True,
+                timeout=self.config.cmd_timeout,
             )
-            return resp.choices[0].message.content
+        except FileNotFoundError:
+            raise RuntimeError(
+                f"smart-llm binary not found at '{self.config.smartllm_binary}'. "
+                "Install it or set VULCAN_SMARTLLM_BIN."
+            )
+        if proc.returncode != 0:
+            raise RuntimeError(f"smart-llm exited {proc.returncode}: {proc.stderr.strip()}")
+        return proc.stdout.strip()
 
     @staticmethod
     def _parse_plan(target: str, raw: str) -> AttackPlan:

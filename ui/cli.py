@@ -43,30 +43,37 @@ def main():
 @main.command()
 @click.option("--target", "-t", required=True, help="Target domain or IP address")
 @click.option("--mode", "-m", default="standard", type=click.Choice(["quick", "standard", "full"]), help="Scan mode")
-@click.option("--llm", default="claude", type=click.Choice(["claude", "openai"]), help="LLM provider")
+@click.option("--llm", default="claude", type=click.Choice(["claude", "openai", "smartllm"]), help="LLM provider")
+@click.option("--local", "local_mode", is_flag=True, help="Shortcut for --llm smartllm --hexstrike (fully local stack)")
+@click.option("--hexstrike/--no-hexstrike", default=False, help="Route tool execution through HexStrike AI :8888")
+@click.option("--hexstrike-url", default="http://127.0.0.1:8888", show_default=True, help="HexStrike server URL")
 @click.option("--report", default="html", type=click.Choice(["html", "pdf", "json"]), help="Report format")
 @click.option("--output", "-o", default="./vulcan_output", help="Output directory")
 @click.option("--config", "-c", default=None, help="Path to config file")
 @click.option("--verbose", "-v", is_flag=True, help="Verbose output")
-def scan(target: str, mode: str, llm: str, report: str, output: str, config: str, verbose: bool):
+def scan(target: str, mode: str, llm: str, local_mode: bool, hexstrike: bool, hexstrike_url: str,
+         report: str, output: str, config: str, verbose: bool):
     """Run a full penetration test against the target."""
     print_banner()
 
     cfg = Config.load(config_path=config)
     cfg.target = target
     cfg.scan_mode = mode
-    cfg.llm_provider = llm
+    cfg.llm_provider = "smartllm" if local_mode else llm
+    cfg.use_hexstrike = hexstrike or local_mode
+    cfg.hexstrike_server = hexstrike_url
     cfg.report_format = report
     cfg.output_dir = output
 
     if not cfg.get_api_key():
-        console.print(f"[bold red]Error:[/] No API key found for {llm}. Set it in .env or environment.")
+        console.print(f"[bold red]Error:[/] No API key found for {cfg.llm_provider}. Set it in .env or environment.")
         sys.exit(1)
 
     console.print(Panel(
         f"[bold]Target:[/] {target}\n"
         f"[bold]Mode:[/] {mode}\n"
-        f"[bold]LLM:[/] {llm}\n"
+        f"[bold]LLM:[/] {cfg.llm_provider}\n"
+        f"[bold]HexStrike:[/] {'on — ' + hexstrike_url if cfg.use_hexstrike else 'off (local subprocess)'}\n"
         f"[bold]Report:[/] {report}\n"
         f"[bold]Output:[/] {output}",
         title="[bold red]Scan Configuration[/]",

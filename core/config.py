@@ -17,7 +17,8 @@ class Config:
     # LLM
     anthropic_api_key: str = ""
     openai_api_key: str = ""
-    llm_provider: str = "claude"
+    llm_provider: str = "claude"  # claude | openai | smartllm
+    smartllm_binary: str = "smart-llm"  # path or PATH name of the local router CLI
 
     # Scan
     scan_mode: str = "standard"
@@ -26,6 +27,8 @@ class Config:
     # Execution
     cmd_timeout: int = 300
     max_concurrency: int = 5
+    use_hexstrike: bool = False
+    hexstrike_server: str = "http://127.0.0.1:8888"
 
     # Output
     output_dir: str = "./vulcan_output"
@@ -46,9 +49,12 @@ class Config:
             anthropic_api_key=os.getenv("ANTHROPIC_API_KEY", ""),
             openai_api_key=os.getenv("OPENAI_API_KEY", ""),
             llm_provider=os.getenv("VULCAN_LLM_PROVIDER", "claude"),
+            smartllm_binary=os.getenv("VULCAN_SMARTLLM_BIN", "smart-llm"),
             scan_mode=os.getenv("VULCAN_SCAN_MODE", "standard"),
             cmd_timeout=int(os.getenv("VULCAN_CMD_TIMEOUT", "300")),
             max_concurrency=int(os.getenv("VULCAN_MAX_CONCURRENCY", "5")),
+            use_hexstrike=os.getenv("VULCAN_USE_HEXSTRIKE", "").lower() in ("1", "true", "yes"),
+            hexstrike_server=os.getenv("VULCAN_HEXSTRIKE_SERVER", "http://127.0.0.1:8888"),
             output_dir=os.getenv("VULCAN_OUTPUT_DIR", "./vulcan_output"),
             report_format=os.getenv("VULCAN_REPORT_FORMAT", "html"),
         )
@@ -69,7 +75,13 @@ class Config:
         return p
 
     def get_api_key(self) -> str:
-        """Return the API key for the configured LLM provider."""
+        """Return the API key for the configured LLM provider.
+
+        For ``smartllm`` there is no API key — returns a sentinel string so callers
+        that only check truthiness will pass.
+        """
         if self.llm_provider == "claude":
             return self.anthropic_api_key
+        if self.llm_provider == "smartllm":
+            return "local"
         return self.openai_api_key

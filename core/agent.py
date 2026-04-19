@@ -26,25 +26,52 @@ console = Console()
 REACT_SYSTEM_PROMPT = """You are Vulcan, an autonomous penetration testing agent.
 You operate in a ReAct loop: Reason about the current state, decide an Action, then Observe the result.
 
-You have access to these modules:
-- recon: subdomain enumeration, port scanning, tech detection, directory bruteforce, DNS enum
-- scanner: nuclei scanning, CVE checks, SSL/TLS analysis, header security, CORS checks
-- exploit: SQL injection, XSS detection, SSRF, command injection, file inclusion
-- web: auth testing, session management, API discovery, parameter fuzzing
-- network: service enumeration, default credentials, SMB/FTP/SSH testing
+Available module.function signatures (use EXACT names — no aliases, no guessing):
 
-Respond in JSON:
+recon:
+- port_scan(target, ports="-", scan_type="default")
+- subdomain_enum(target)
+- tech_detect(target)
+- dir_bruteforce(target, wordlist=None)
+- dns_enum(target)
+
+scanner:
+- nuclei_scan(target, templates="", severity="")
+- ssl_analysis(target)
+- header_security(target)
+- cors_check(target)
+- cve_check(target, services=None)
+
+exploit:
+- sqli_test(target, url="", params=None)
+- xss_detect(target, url="", params=None)
+- ssrf_test(target, url="", params=None)
+- cmdi_test(target, url="", params=None)
+- lfi_test(target, url="", params=None)
+
+web:
+- auth_test(target, login_url="")
+- session_test(target)
+- api_discovery(target)
+- param_fuzz(target, url="", wordlist=None)
+
+network:
+- service_enum(target, ports=None)
+- default_creds_check(target, services=None)
+- smb_test(target)
+
+Respond in JSON only (no prose, no code fences):
 {
   "reasoning": "Your analysis of the current situation",
   "action": {
     "module": "module_name",
     "function": "function_name",
-    "args": {"key": "value"}
+    "args": {"target": "..."}
   },
   "should_continue": true
 }
 
-Set should_continue to false when the assessment is complete.
+Set should_continue to false when the assessment is complete or after three consecutive errors.
 Be thorough but efficient. Prioritize high-impact findings."""
 
 
@@ -70,10 +97,19 @@ class VulcanAgent:
 
     def __init__(self, config: Config):
         self.config = config
-        self.executor = Executor(
-            timeout=config.cmd_timeout,
-            max_concurrency=config.max_concurrency,
-        )
+        if config.use_hexstrike:
+            from core.hexstrike_executor import HexStrikeExecutor
+            self.executor = HexStrikeExecutor(
+                timeout=config.cmd_timeout,
+                max_concurrency=config.max_concurrency,
+                server_url=config.hexstrike_server,
+                fallback_local=True,
+            )
+        else:
+            self.executor = Executor(
+                timeout=config.cmd_timeout,
+                max_concurrency=config.max_concurrency,
+            )
         self.planner = Planner(config)
         self.reporter = Reporter(config.output_dir)
         self.state = AgentState()
@@ -95,6 +131,9 @@ class VulcanAgent:
         if self.config.llm_provider == "claude":
             import anthropic
             self._llm_client = anthropic.Anthropic(api_key=self.config.anthropic_api_key)
+        elif self.config.llm_provider == "smartllm":
+            # smart-llm is a subprocess binary — no SDK client needed. Return a sentinel.
+            self._llm_client = "smartllm"
         else:
             import openai
             self._llm_client = openai.OpenAI(api_key=self.config.openai_api_key)
@@ -256,13 +295,52 @@ class VulcanAgent:
                 messages=messages,
             )
             return resp.content[0].text
-        else:
-            resp = client.chat.completions.create(
-                model="gpt-4o",
-                max_tokens=4096,
-                messages=[{"role": "system", "content": system}] + messages,
+        if self.config.llm_provider == "smartllm":
+            return self._call_smartllm(system, messages)
+        resp = client.chat.completions.create(
+            model="gpt-4o",
+            max_tokens=4096,
+            messages=[{"role": "system", "content": system}] + messages,
+        )
+        return resp.choices[0].message.content
+
+    def _call_smartllm(self, system: str, messages: list[dict]) -> str:
+        """Delegate reasoning to the local smart-llm router.
+
+        Flattens the conversation to a single prompt (system + turns) and invokes
+        ``smart-llm --task reason --keep-alive 24h``. Returns stdout verbatim; the
+        ReAct loop expects a JSON blob which smart-llm's reasoning model produces.
+        """
+        import subprocess
+
+        parts: list[str] = [f"[SYSTEM]\n{system}\n"]
+        for m in messages:
+            role = m.get("role", "user").upper()
+            parts.append(f"[{role}]\n{m.get('content', '')}\n")
+        parts.append("[ASSISTANT]\nReply with ONLY the JSON object — no prose, no code fences.\n")
+        prompt = "\n".join(parts)
+
+        try:
+            proc = subprocess.run(
+                [
+                    self.config.smartllm_binary,
+                    prompt,
+                    "--task", "reason",
+                    "--keep-alive", "24h",
+                    "--max-tokens", "2048",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=self.config.cmd_timeout,
             )
-            return resp.choices[0].message.content
+        except FileNotFoundError:
+            raise RuntimeError(
+                f"smart-llm binary not found at '{self.config.smartllm_binary}'. "
+                "Install it or set VULCAN_SMARTLLM_BIN."
+            )
+        if proc.returncode != 0:
+            raise RuntimeError(f"smart-llm exited {proc.returncode}: {proc.stderr.strip()}")
+        return proc.stdout.strip()
 
     async def _execute_action(self, module_name: str, func_name: str, args: dict) -> dict:
         """Execute an action on a module."""
